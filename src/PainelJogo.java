@@ -151,7 +151,6 @@ public class PainelJogo extends JPanel {
 
         if (janela != null) {
             janela.pack();
-            janela.setLocationRelativeTo(null);
         }
     }
 
