@@ -19,7 +19,8 @@ public class PainelJogo extends JPanel {
     public PainelJogo(Nivel nivel) {
         this.nivel = nivel;
 
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout(0, 6));
+        EstiloJogo.estilizarPainelPrincipal(this);
 
         criarTopo();
         criarTabuleiro();
@@ -70,14 +71,18 @@ public class PainelJogo extends JPanel {
 
         atualizarDisplayMinas();
 
-        painelTabuleiro = new JPanel(new GridLayout(nivel.linhas, nivel.colunas));
+        painelTabuleiro = new JPanel(
+                new GridLayout(nivel.linhas, nivel.colunas, 1, 1)
+        );
+
+        EstiloJogo.estilizarTabuleiro(painelTabuleiro);
         celulas = new Celula[nivel.linhas][nivel.colunas];
 
         for (int linha = 0; linha < nivel.linhas; linha++) {
             for (int coluna = 0; coluna < nivel.colunas; coluna++) {
                 Celula celula = new Celula(linha, coluna);
 
-                celula.setPreferredSize(new Dimension(30, 30));
+                EstiloJogo.estilizarCelulaFechada(celula);
 
                 celula.addMouseListener(new MouseAdapter() {
                     @Override
@@ -198,7 +203,7 @@ public class PainelJogo extends JPanel {
         }
 
         celula.aberta = true;
-        celula.setEnabled(false);
+        EstiloJogo.estilizarCelulaAberta(celula);
 
         if (celula.temMina) {
             celula.setText("*");
@@ -208,6 +213,9 @@ public class PainelJogo extends JPanel {
 
         if (celula.minasAoRedor > 0) {
             celula.setText(String.valueOf(celula.minasAoRedor));
+            celula.setForeground(
+                    EstiloJogo.corDoNumero(celula.minasAoRedor)
+            );
         } else {
             abrirVizinhas(celula.linha, celula.coluna);
         }
