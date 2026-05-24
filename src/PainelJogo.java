@@ -27,23 +27,18 @@ public class PainelJogo extends JPanel {
 
     public JMenuBar criarMenu() {
         JMenuBar menuBar = new JMenuBar();
-
         JMenu menuJogo = new JMenu("Jogo");
 
-        JMenuItem novoJogo = new JMenuItem("Novo jogo");
         JMenuItem facil = new JMenuItem("Fácil");
         JMenuItem medio = new JMenuItem("Médio");
         JMenuItem avancado = new JMenuItem("Avançado");
         JMenuItem sair = new JMenuItem("Sair");
 
-        novoJogo.addActionListener(e -> reiniciar(nivel));
         facil.addActionListener(e -> reiniciar(Nivel.FACIL));
         medio.addActionListener(e -> reiniciar(Nivel.MEDIO));
         avancado.addActionListener(e -> reiniciar(Nivel.AVANCADO));
         sair.addActionListener(e -> System.exit(0));
 
-        menuJogo.add(novoJogo);
-        menuJogo.addSeparator();
         menuJogo.add(facil);
         menuJogo.add(medio);
         menuJogo.add(avancado);
@@ -58,12 +53,12 @@ public class PainelJogo extends JPanel {
     private void criarTopo() {
         JPanel topo = new JPanel(new BorderLayout());
 
-        labelMinas = new JLabel("Minas: " + nivel.minas);
+        labelMinas = new JLabel();
         botaoReiniciar = new JButton(":)");
 
         botaoReiniciar.addActionListener(e -> reiniciar(nivel));
 
-        topo.add(labelMinas, BorderLayout.WEST);
+        topo.add(labelMinas, BorderLayout.EAST);
         topo.add(botaoReiniciar, BorderLayout.CENTER);
 
         add(topo, BorderLayout.NORTH);
@@ -73,7 +68,7 @@ public class PainelJogo extends JPanel {
         jogoFinalizado = false;
         marcacoesRestantes = nivel.minas;
 
-        labelMinas.setText("Minas: " + marcacoesRestantes);
+        atualizarDisplayMinas();
 
         painelTabuleiro = new JPanel(new GridLayout(nivel.linhas, nivel.colunas));
         celulas = new Celula[nivel.linhas][nivel.colunas];
@@ -189,11 +184,11 @@ public class PainelJogo extends JPanel {
             }
 
             celula.marcada = true;
-            celula.setText("F");
+            celula.setText("B");
             marcacoesRestantes--;
         }
 
-        labelMinas.setText("Minas: " + marcacoesRestantes);
+        atualizarDisplayMinas();
         verificarVitoriaPorMarcacao();
     }
 
@@ -301,5 +296,9 @@ public class PainelJogo extends JPanel {
         botaoReiniciar.setText(":D");
 
         JOptionPane.showMessageDialog(this, "Parabéns! Você venceu!");
+    }
+
+    private void atualizarDisplayMinas() {
+        labelMinas.setText("Minas: " + marcacoesRestantes);
     }
 }
