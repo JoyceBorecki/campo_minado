@@ -36,11 +36,11 @@ public class PainelJogo extends JPanel {
     }
 
     private void carregarIcones() {
-        iconeFeliz = carregarIcone("/assets/feliz.png", 24, 24);
+        iconeFeliz = carregarIcone("/assets/feliz.png", 26, 26);
         iconePerdedor = carregarIcone("/assets/perdedor.png", 24, 24);
         iconeBandeira = carregarIcone("/assets/bandeira.png", 18, 18);
         iconeMina = carregarIcone("/assets/mina.png", 18, 18);
-        iconeVencedor = carregarIcone("/assets/vencedor.png", 18, 18);
+        iconeVencedor = carregarIcone("/assets/vencedor.png", 40, 40);
     }
 
     private ImageIcon carregarIcone(String caminho, int largura, int altura) {
@@ -239,6 +239,7 @@ public class PainelJogo extends JPanel {
         }
 
         celula.aberta = true;
+        celula.setIcon(null);
         EstiloJogo.estilizarCelulaAberta(celula);
 
         if (celula.temMina) {
@@ -291,8 +292,6 @@ public class PainelJogo extends JPanel {
                     celula.setIcon(iconeMina);
                     celula.setText("");
                 }
-
-                celula.setEnabled(false);
             }
         }
     }
@@ -341,7 +340,7 @@ public class PainelJogo extends JPanel {
         }
 
         jogoFinalizado = true;
-        botaoReiniciar.setIcon(iconeFeliz);
+        botaoReiniciar.setIcon(iconeVencedor);
 
         JOptionPane.showMessageDialog(this, "Parabéns! Você venceu!");
     }

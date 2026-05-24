@@ -36,7 +36,6 @@ public class EstiloJogo {
     }
 
     public static void estilizarCelulaAberta(Celula celula) {
-        celula.setEnabled(false);
         celula.setBackground(CINZA_CLARO);
         celula.setBorder(BorderFactory.createLineBorder(CINZA_ESCURO));
     }
@@ -51,7 +50,6 @@ public class EstiloJogo {
     }
 
     public static void estilizarBotaoReiniciar(JButton botao) {
-        botao.setFont(new Font("Arial", Font.BOLD, 14));
         botao.setPreferredSize(new Dimension(42, 34));
         botao.setFocusPainted(false);
         botao.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
