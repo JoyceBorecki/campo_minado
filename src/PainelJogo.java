@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 import java.util.Random;
 
 public class PainelJogo extends JPanel {
@@ -13,17 +14,45 @@ public class PainelJogo extends JPanel {
     private JLabel labelMinas;
     private JButton botaoReiniciar;
 
+    private ImageIcon iconeFeliz;
+    private ImageIcon iconePerdedor;
+    private ImageIcon iconeBandeira;
+    private ImageIcon iconeMina;
+    private ImageIcon iconeVencedor;
+
     private int marcacoesRestantes;
     private boolean jogoFinalizado;
 
     public PainelJogo(Nivel nivel) {
         this.nivel = nivel;
 
+        carregarIcones();
+
         setLayout(new BorderLayout(0, 6));
         EstiloJogo.estilizarPainelPrincipal(this);
 
         criarTopo();
         criarTabuleiro();
+    }
+
+    private void carregarIcones() {
+        iconeFeliz = carregarIcone("/assets/feliz.png", 24, 24);
+        iconePerdedor = carregarIcone("/assets/perdedor.png", 24, 24);
+        iconeBandeira = carregarIcone("/assets/bandeira.png", 18, 18);
+        iconeMina = carregarIcone("/assets/mina.png", 18, 18);
+        iconeVencedor = carregarIcone("/assets/vencedor.png", 18, 18);
+    }
+
+    private ImageIcon carregarIcone(String caminho, int largura, int altura) {
+        ImageIcon icone = new ImageIcon(Objects.requireNonNull(getClass().getResource(caminho)));
+
+        Image imagem = icone.getImage().getScaledInstance(
+                largura,
+                altura,
+                Image.SCALE_SMOOTH
+        );
+
+        return new ImageIcon(imagem);
     }
 
     public JMenuBar criarMenu() {
@@ -54,13 +83,18 @@ public class PainelJogo extends JPanel {
     private void criarTopo() {
         JPanel topo = new JPanel(new BorderLayout());
 
+        EstiloJogo.estilizarTopo(topo);
+
         labelMinas = new JLabel();
-        botaoReiniciar = new JButton(":)");
+        EstiloJogo.estilizarDisplayMinas(labelMinas);
+
+        botaoReiniciar = new JButton(iconeFeliz);
+        EstiloJogo.estilizarBotaoReiniciar(botaoReiniciar);
 
         botaoReiniciar.addActionListener(e -> reiniciar(nivel));
 
-        topo.add(labelMinas, BorderLayout.EAST);
         topo.add(botaoReiniciar, BorderLayout.CENTER);
+        topo.add(labelMinas, BorderLayout.EAST);
 
         add(topo, BorderLayout.NORTH);
     }
@@ -181,6 +215,7 @@ public class PainelJogo extends JPanel {
 
         if (celula.marcada) {
             celula.marcada = false;
+            celula.setIcon(null);
             celula.setText("");
             marcacoesRestantes++;
         } else {
@@ -189,7 +224,8 @@ public class PainelJogo extends JPanel {
             }
 
             celula.marcada = true;
-            celula.setText("B");
+            celula.setIcon(iconeBandeira);
+            celula.setText("");
             marcacoesRestantes--;
         }
 
@@ -206,7 +242,8 @@ public class PainelJogo extends JPanel {
         EstiloJogo.estilizarCelulaAberta(celula);
 
         if (celula.temMina) {
-            celula.setText("*");
+            celula.setIcon(iconeMina);
+            celula.setText("");
             perderJogo();
             return;
         }
@@ -239,7 +276,7 @@ public class PainelJogo extends JPanel {
 
     private void perderJogo() {
         jogoFinalizado = true;
-        botaoReiniciar.setText(":(");
+        botaoReiniciar.setIcon(iconePerdedor);
         mostrarMinas();
 
         JOptionPane.showMessageDialog(this, "Você perdeu!");
@@ -251,8 +288,11 @@ public class PainelJogo extends JPanel {
                 Celula celula = celulas[linha][coluna];
 
                 if (celula.temMina) {
-                    celula.setText("*");
+                    celula.setIcon(iconeMina);
+                    celula.setText("");
                 }
+
+                celula.setEnabled(false);
             }
         }
     }
@@ -301,12 +341,14 @@ public class PainelJogo extends JPanel {
         }
 
         jogoFinalizado = true;
-        botaoReiniciar.setText(":D");
+        botaoReiniciar.setIcon(iconeFeliz);
 
         JOptionPane.showMessageDialog(this, "Parabéns! Você venceu!");
     }
 
     private void atualizarDisplayMinas() {
-        labelMinas.setText("Minas: " + marcacoesRestantes);
+        labelMinas.setText(
+                String.format("%03d", marcacoesRestantes)
+        );
     }
 }
