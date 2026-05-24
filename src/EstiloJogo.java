@@ -50,9 +50,11 @@ public class EstiloJogo {
     }
 
     public static void estilizarBotaoReiniciar(JButton botao) {
-        botao.setPreferredSize(new Dimension(42, 34));
+        botao.setPreferredSize(new Dimension(36, 36));
         botao.setFocusPainted(false);
         botao.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        botao.setContentAreaFilled(true);
+        botao.setBackground(CINZA_CLARO);
     }
 
     public static Color corDoNumero(int numero) {

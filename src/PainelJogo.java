@@ -93,8 +93,13 @@ public class PainelJogo extends JPanel {
 
         botaoReiniciar.addActionListener(e -> reiniciar(nivel));
 
-        topo.add(botaoReiniciar, BorderLayout.CENTER);
-        topo.add(labelMinas, BorderLayout.EAST);
+        JPanel painelCentro = new JPanel();
+        painelCentro.setBackground(EstiloJogo.CINZA_CLARO);
+
+        painelCentro.add(botaoReiniciar);
+
+        topo.add(labelMinas, BorderLayout.WEST);
+        topo.add(painelCentro, BorderLayout.CENTER);
 
         add(topo, BorderLayout.NORTH);
     }
